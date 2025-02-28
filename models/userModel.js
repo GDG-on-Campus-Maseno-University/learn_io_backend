@@ -40,6 +40,18 @@ const userSchema = new mongoose.Schema({
     is_deleted: {
         type: Boolean,
         default: false
+    },
+    phonenumber: {
+        type: String,
+        default: ''
+    },
+    school: {
+        type: String,
+        default: ''
+    },
+    speciality: {
+        type: String,
+        default: ''
     }
 });
 

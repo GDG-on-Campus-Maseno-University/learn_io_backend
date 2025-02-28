@@ -179,7 +179,7 @@ router.get('/users', authenticateUser, authorizeRoles('admin'), userController.g
  *     tags:
  *       - Users
  *     security:
- *       - BearerAuth: []  # Requires JWT authentication
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
@@ -202,6 +202,12 @@ router.get('/users', authenticateUser, authorizeRoles('admin'), userController.g
  *                 type: string
  *               bio:
  *                 type: string
+ *               phonenumber:
+ *                 type: string
+ *               school:
+ *                 type: string
+ *               speciality:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Updated user profile
@@ -215,7 +221,7 @@ router.get('/users', authenticateUser, authorizeRoles('admin'), userController.g
  *     tags:
  *       - Users
  *     security:
- *       - BearerAuth: []  # Requires JWT authentication
+ *       - BearerAuth: []
  *     parameters:
  *       - name: id
  *         in: path
