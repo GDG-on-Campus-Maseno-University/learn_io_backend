@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const { sendEmail } = require('../controllers/notificationController');
 const { authenticateUser, authorizeRoles } = require('../middlewares/authourizationMiddleware');
 
 /**
@@ -233,5 +234,50 @@ router.get('/users', authenticateUser, authorizeRoles('admin'), userController.g
  */
 router.patch('/users/:id', authenticateUser, authorizeRoles('admin', 'staff'), userController.updateUser);
 router.delete('/users/:id', authenticateUser, authorizeRoles('admin'), userController.deleteUser);
+
+/**
+ * @swagger
+ * /api/notifications:
+ *   post:
+ *     summary: Send a notification email
+ *     description: Sends a notification email to a specified user.
+ *     tags:
+ *       - Notifications
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: tenkphantasma@protonmail.com
+ *                 description: Recipient's email address.
+ *               subject:
+ *                 type: string
+ *                 example: Notification Alert
+ *                 description: Email subject.
+ *               message:
+ *                 type: string
+ *                 example: You have a new notification!
+ *                 description: Quantum was here.
+ *     responses:
+ *       200:
+ *         description: Notification sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Notification sent successfully
+ *       400:
+ *         description: Bad request, validation failed
+ *       500:
+ *         description: Server error
+ */
+router.post('/notifications', authenticateUser, sendEmail);
 
 module.exports = router;
