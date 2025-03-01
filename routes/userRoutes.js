@@ -1,7 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userController = require('../controllers/userController');
-const { authenticateUser, authorizeRoles } = require('../middlewares/authourizationMiddleware');
+const userController = require("../controllers/userController");
+const {
+  authenticateUser,
+  authorizeRoles,
+} = require("../middlewares/authourizationMiddleware");
 
 /**
  * @swagger
@@ -62,8 +65,7 @@ const { authenticateUser, authorizeRoles } = require('../middlewares/authourizat
  *       500:
  *         description: Server error
  */
-router.post('/register', userController.register);
-
+router.post("/register", userController.register);
 
 /**
  * @swagger
@@ -120,7 +122,7 @@ router.post('/register', userController.register);
  *       500:
  *         description: Server error
  */
-router.post('/login', userController.login);
+router.post("/login", userController.login);
 
 /**
  * @swagger
@@ -166,9 +168,12 @@ router.post('/login', userController.login);
  *       500:
  *         description: Server error
  */
-router.get('/users', authenticateUser, authorizeRoles('admin'), userController.getAllUsers);
-
-	
+router.get(
+  "/users",
+  authenticateUser,
+  authorizeRoles("admin"),
+  userController.getAllUsers
+);
 
 /**
  * @swagger
@@ -231,7 +236,67 @@ router.get('/users', authenticateUser, authorizeRoles('admin'), userController.g
  *       500:
  *         description: Server error
  */
-router.patch('/users/:id', authenticateUser, authorizeRoles('admin', 'staff'), userController.updateUser);
-router.delete('/users/:id', authenticateUser, authorizeRoles('admin'), userController.deleteUser);
+router.patch(
+  "/users/:id",
+  authenticateUser,
+  authorizeRoles("admin", "staff"),
+  userController.updateUser
+);
+router.delete(
+  "/users/:id",
+  authenticateUser,
+  authorizeRoles("admin"),
+  userController.deleteUser
+);
+/**
+ * @swagger
+ * /api/users/changePassword:
+ *   post:
+ *     summary: Change user password
+ *     description: Allows a user to change their password by verifying the old password and updating to a new password.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - BearerAuth: []  # Requires JWT authentication if enabled
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - oldPassword
+ *               - newPassword
+ *               - newPasswordConfirm
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The user's email address.
+ *               oldPassword:
+ *                 type: string
+ *                 description: The current password.
+ *               newPassword:
+ *                 type: string
+ *                 description: The new password.
+ *               newPasswordConfirm:
+ *                 type: string
+ *                 description: Confirmation of the new password.
+ *     responses:
+ *       200:
+ *         description: Password changed successfully.
+ *       400:
+ *         description: Bad request (e.g., missing fields or passwords do not match).
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Server error.
+ */
+router.post(
+  "/users/changePassword",
+  authenticateUser,
+  authorizeRoles("admin", "staff"),
+  userController.changePassword
+);
 
 module.exports = router;
