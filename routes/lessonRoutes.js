@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const lessonsController = require('../controllers/lessonsController');
 
+
 /**
  * @swagger
  * tags:
@@ -40,7 +41,7 @@ const lessonsController = require('../controllers/lessonsController');
  *       500:
  *         description: Server error
  */
-router.get('/', lessonsController.getAllLessons);
+router.get('/lessons/', lessonsController.getAllLessons);
 
 /**
  * @swagger
@@ -77,7 +78,7 @@ router.get('/', lessonsController.getAllLessons);
  *       500:
  *         description: Server error
  */
-router.get('/:id', lessonsController.getLessonById);
+router.get('/lessons/:id', lessonsController.getLessonById);
 
 /**
  * @swagger
@@ -141,11 +142,11 @@ router.get('/:id', lessonsController.getLessonById);
  *       500:
  *         description: Server error
  */
-router.post('/', lessonsController.createLesson);
+router.post('/lessons/', lessonsController.createLesson);
 
 /**
  * @swagger
- * /api/lessons/{id}:
+ * /api/lessons:
  *   put:
  *     summary: Update an existing lesson
  *     description: Update a lesson by its unique ID.
@@ -195,7 +196,7 @@ router.post('/', lessonsController.createLesson);
  *       500:
  *         description: Server error
  */
-router.put('/:id', lessonsController.updateLesson);
+router.put('/lessons/:id', lessonsController.updateLesson);
 
 /**
  * @swagger
@@ -219,6 +220,6 @@ router.put('/:id', lessonsController.updateLesson);
  *       500:
  *         description: Server error
  */
-router.delete('/:id', lessonsController.deleteLesson);
+router.delete('/lessons/:id', lessonsController.deleteLesson);
 
 module.exports = router;

@@ -1,5 +1,25 @@
 const Lesson = require('../models/lessonModels'); // Import the Lesson model
 
+// Create a new lesson
+exports.createLesson = async (req, res) => {
+    try {
+        const { title, description } = req.body;
+        const newLesson = new Lesson({ title, description });
+        await newLesson.save();
+        res.status(201).json({
+            status: 'success',
+            data: {
+                lesson: newLesson
+            }
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: 'error',
+            message: error.message
+        });
+    }
+};
+
 // Retrieve all lessons
 exports.getAllLessons = async (req, res) => {
     try {
@@ -43,25 +63,6 @@ exports.getLessonById = async (req, res) => {
     }
 };
 
-// Create a new lesson
-exports.createLesson = async (req, res) => {
-    try {
-        const { title, description } = req.body;
-        const newLesson = new Lesson({ title, description });
-        await newLesson.save();
-        res.status(201).json({
-            status: 'success',
-            data: {
-                lesson: newLesson
-            }
-        });
-    } catch (error) {
-        res.status(400).json({
-            status: 'error',
-            message: error.message
-        });
-    }
-};
 
 // Update an existing lesson by ID
 exports.updateLesson = async (req, res) => {
