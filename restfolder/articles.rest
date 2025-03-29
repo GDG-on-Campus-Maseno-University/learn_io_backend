@@ -7,7 +7,7 @@ GET http://localhost:3000/articles/{id}
 ### Create a new article
 POST http://localhost:3000/api/articles
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3ZTE0OTQ4ZmE4YmMwZGY1ZTk2ZjJjNCIsInJvbGUiOiJzdHVkZW50IiwiaWF0IjoxNzQyODIzNzkyLCJleHAiOjE3NDI5MTAxOTJ9.rHhWLZsecPNrmqZpbZhnVR_-E7ha2Yny3agOZpURnmQ
+
 
 {
     "title": "New Article",

@@ -14,8 +14,6 @@ const { authorizeRoles } = require('../middlewares/authourizationMiddleware');
  *   name: Password
  *   description: Password management endpoints
  */
-const { sendEmail } = require('../controllers/notificationController');
-const { authenticateUser, authorizeRoles, validateRoles } = require('../middlewares/authourizationMiddleware');
 
 /**
  * @swagger

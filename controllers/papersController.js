@@ -1,4 +1,4 @@
-const Lesson = require('../models/lessonModels'); // Assuming you have a Lesson model
+const Lesson = require('../models/papersModels'); // Assuming you have a Lesson model
 const fs = require('fs');
 const path = require('path');
 
