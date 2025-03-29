@@ -1,109 +1,109 @@
-const Lesson = require('../models/papersModels'); // Assuming you have a Lesson model
+const Papers = require('../models/papersModels'); // Assuming you have a Papers model
 const fs = require('fs');
 const path = require('path');
 
 /**
- * @desc Get all lessons
- * @route GET /api/lessons
+ * @desc Get all Papers
+ * @route GET /api/Papers
  * @access Private (Authenticated users)
  */
-exports.getAllLessons = async(req, res) => {
+exports.getAllPapers = async(req, res) => {
     try {
-        const lessons = await Lesson.find({ deleted: false }); // Exclude soft-deleted lessons
-        res.status(200).json(lessons);
+        const Papers = await Papers.find({ deleted: false }); // Exclude soft-deleted Papers
+        res.status(200).json(Papers);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
 
 /**
- * @desc Get a single lesson by ID
- * @route GET /api/lessons/:id
+ * @desc Get a single Papers by ID
+ * @route GET /api/Papers/:id
  * @access Private
  */
-exports.getLessonById = async(req, res) => {
+exports.getPapersById = async(req, res) => {
     try {
-        const lesson = await Lesson.findById(req.params.id);
-        if (!lesson || lesson.deleted) {
-            return res.status(404).json({ message: 'Lesson not found' });
+        const Papers = await Papers.findById(req.params.id);
+        if (!Papers || Papers.deleted) {
+            return res.status(404).json({ message: 'Papers not found' });
         }
-        res.status(200).json(lesson);
+        res.status(200).json(Papers);
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
 
 /**
- * @desc Create a new lesson
- * @route POST /api/lessons
+ * @desc Create a new Papers
+ * @route POST /api/Papers
  * @access Private (Admin/Staff)
  */
-exports.createLesson = async(req, res) => {
+exports.createPapers = async(req, res) => {
     try {
         const { title, description } = req.body;
         if (!title || !description) {
             return res.status(400).json({ message: 'Title and description are required' });
         }
 
-        const newLesson = new Lesson({
+        const newPapers = new Papers({
             title,
             description,
             file: req.file ? req.file.path : null, // Store file path if uploaded
         });
 
-        await newLesson.save();
-        res.status(201).json({ message: 'Lesson created successfully', lesson: newLesson });
+        await newPapers.save();
+        res.status(201).json({ message: 'Papers created successfully', Papers: newPapers });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
 
 /**
- * @desc Update a lesson
- * @route PUT /api/lessons/:id
+ * @desc Update a Papers
+ * @route PUT /api/Papers/:id
  * @access Private (Admin/Staff)
  */
-exports.updateLesson = async(req, res) => {
+exports.updatePapers = async(req, res) => {
     try {
         const { title, description } = req.body;
-        const lesson = await Lesson.findById(req.params.id);
+        const Papers = await Papers.findById(req.params.id);
 
-        if (!lesson || lesson.deleted) {
-            return res.status(404).json({ message: 'Lesson not found' });
+        if (!Papers || Papers.deleted) {
+            return res.status(404).json({ message: 'Papers not found' });
         }
 
         // Delete old file if new one is uploaded
-        if (req.file && lesson.file) {
-            fs.unlinkSync(path.resolve(lesson.file));
+        if (req.file && Papers.file) {
+            fs.unlinkSync(path.resolve(Papers.file));
         }
 
-        lesson.title = title || lesson.title;
-        lesson.description = description || lesson.description;
-        lesson.file = req.file ? req.file.path : lesson.file;
+        Papers.title = title || Papers.title;
+        Papers.description = description || Papers.description;
+        Papers.file = req.file ? req.file.path : Papers.file;
 
-        await lesson.save();
-        res.status(200).json({ message: 'Lesson updated successfully', lesson });
+        await Papers.save();
+        res.status(200).json({ message: 'Papers updated successfully', Papers });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }
 };
 
 /**
- * @desc Soft delete a lesson
- * @route DELETE /api/lessons/:id
+ * @desc Soft delete a Papers
+ * @route DELETE /api/Papers/:id
  * @access Private (Admin/Staff)
  */
-exports.deleteLesson = async(req, res) => {
+exports.deletePapers = async(req, res) => {
     try {
-        const lesson = await Lesson.findById(req.params.id);
+        const Papers = await Papers.findById(req.params.id);
 
-        if (!lesson || lesson.deleted) {
-            return res.status(404).json({ message: 'Lesson not found' });
+        if (!Papers || Papers.deleted) {
+            return res.status(404).json({ message: 'Papers not found' });
         }
 
-        lesson.deleted = true;
-        await lesson.save();
-        res.status(204).json({ message: 'Lesson deleted successfully' });
+        Papers.deleted = true;
+        await Papers.save();
+        res.status(204).json({ message: 'Papers deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error });
     }

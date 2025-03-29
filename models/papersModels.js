@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-const lessonSchema = new mongoose.Schema({
+const paperSchema = new mongoose.Schema({
     id: {
         type: String,
         default: uuidv4,
@@ -9,11 +9,11 @@ const lessonSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: [true, 'Please provide a title for the lesson']
+        required: [true, 'Please provide a title for the paper']
     },
     description: {
         type: String,
-        required: [true, 'Please provide a description for the lesson']
+        required: [true, 'Please provide a description for the paper']
     },
     file: {
         type: String, // This will store the file path or URL
@@ -34,16 +34,16 @@ const lessonSchema = new mongoose.Schema({
 });
 
 // Middleware to update the updatedAt field before saving
-lessonSchema.pre('save', function(next) {
+paperSchema.pre('save', function(next) {
     this.updatedAt = Date.now();
     next();
 });
 
 // Middleware to update the updatedAt field before updating
-lessonSchema.pre('findOneAndUpdate', function(next) {
+paperSchema.pre('findOneAndUpdate', function(next) {
     this.set({ updatedAt: Date.now() });
     next();
 });
 
-const Lesson = mongoose.model('Lesson', lessonSchema);
-module.exports = Lesson;
+const Paper = mongoose.model('paper', paperSchema);
+module.exports = Paper;
