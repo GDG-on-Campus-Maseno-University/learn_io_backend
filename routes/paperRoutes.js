@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const lessonsController = require('../controllers/lessonsController');
+const papersController = require('../controllers/papersController');
 const upload = require('../middlewares/uploadMiddleware');
 const { authenticateUser, authorizeRoles } = require('../middlewares/authourizationMiddleware');
 
@@ -9,7 +9,7 @@ const { authenticateUser, authorizeRoles } = require('../middlewares/authourizat
  * @swagger
  * components:
  *   schemas:
- *     Lesson:
+ *     Paper:
  *       type: object
  *       required:
  *         - title
@@ -17,81 +17,81 @@ const { authenticateUser, authorizeRoles } = require('../middlewares/authourizat
  *       properties:
  *         id:
  *           type: string
- *           description: The auto-generated ID of the lesson
+ *           description: The auto-generated ID of the Paper
  *         title:
  *           type: string
- *           description: The lesson title
+ *           description: The Paper title
  *         description:
  *           type: string
- *           description: A brief description of the lesson
+ *           description: A brief description of the Paper
  *         file:
  *           type: string
  *           format: binary
- *           description: The uploaded lesson file (PDF or DOC)
+ *           description: The uploaded Paper file (PDF or DOC)
  */
 
 /**
  * @swagger
  * tags:
- *   name: Lessons
- *   description: Lesson management API
+ *   name: papers
+ *   description: Paper management API
  */
 
 /**
  * @swagger
- * /api/lessons:
+ * /api/papers:
  *   get:
- *     summary: Retrieve all lessons
- *     tags: [Lessons]
+ *     summary: Retrieve all papers
+ *     tags: [papers]
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: A list of lessons
+ *         description: A list of papers
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Lesson'
+ *                 $ref: '#/components/schemas/Paper'
  */
 
-router.get('/lessons/', lessonsController.getAllLessons);
+router.get('/papers/', papersController.getAllPapers);
 
 
 /**
  * @swagger
- * /api/lessons/{id}:
+ * /api/papers/{id}:
  *   get:
- *     summary: Get a lesson by ID
- *     tags: [Lessons]
+ *     summary: Get a Paper by ID
+ *     tags: [papers]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The lesson ID
+ *         description: The Paper ID
  *     responses:
  *       200:
- *         description: Lesson data
+ *         description: Paper data
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Lesson'
+ *               $ref: '#/components/schemas/Paper'
  *       404:
- *         description: Lesson not found
+ *         description: Paper not found
  */
 
-router.get('/lessons/:id', authenticateUser, lessonsController.getLessonById);
+router.get('/papers/:id', authenticateUser, papersController.getPapersById);
 
 
 /**
  * @swagger
- * /api/lessons:
+ * /api/papers:
  *   post:
- *     summary: Create a new lesson
- *     tags: [Lessons]
+ *     summary: Create a new Paper
+ *     tags: [papers]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -103,30 +103,30 @@ router.get('/lessons/:id', authenticateUser, lessonsController.getLessonById);
  *             properties:
  *               title:
  *                 type: string
- *                 description: Lesson title
+ *                 description: Paper title
  *               description:
  *                 type: string
- *                 description: Lesson description
+ *                 description: Paper description
  *               file:
  *                 type: string
  *                 format: binary
  *                 description: File upload (PDF/DOC)
  *     responses:
  *       201:
- *         description: Lesson created successfully
+ *         description: Paper created successfully
  *       400:
  *         description: Bad request
  */
 
-router.post('/lessons', authenticateUser, authorizeRoles('admin', 'staff'), upload.single('file'), lessonsController.createLesson);
+router.post('/papers', authenticateUser, authorizeRoles('admin', 'staff'), upload.single('file'), papersController.createPapers);
 
 
 /**
  * @swagger
- * /api/lessons:
+ * /api/papers:
  *   put:
- *     summary: Update an existing lesson
- *     tags: [Lessons]
+ *     summary: Update an existing Paper
+ *     tags: [papers]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -135,7 +135,7 @@ router.post('/lessons', authenticateUser, authorizeRoles('admin', 'staff'), uplo
  *         schema:
  *           type: string
  *         required: true
- *         description: The lesson ID
+ *         description: The Paper ID
  *     requestBody:
  *       required: true
  *       content:
@@ -153,20 +153,20 @@ router.post('/lessons', authenticateUser, authorizeRoles('admin', 'staff'), uplo
  *                 description: Optional file update
  *     responses:
  *       200:
- *         description: Lesson updated successfully
+ *         description: Paper updated successfully
  *       404:
- *         description: Lesson not found
+ *         description: Paper not found
  */
 
-router.put('/lessons/:id', authenticateUser, authorizeRoles('admin', 'staff'), upload.single('file'), lessonsController.updateLesson);
+router.put('/papers/:id', authenticateUser, authorizeRoles('admin', 'staff'), upload.single('file'), papersController.updatePapers);
 
 
 /**
  * @swagger
- * /lessons/{id}:
+ * /papers/{id}:
  *   delete:
- *     summary: Soft delete a lesson
- *     tags: [Lessons]
+ *     summary: Soft delete a Paper
+ *     tags: [papers]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -175,15 +175,15 @@ router.put('/lessons/:id', authenticateUser, authorizeRoles('admin', 'staff'), u
  *         schema:
  *           type: string
  *         required: true
- *         description: The lesson ID
+ *         description: The Paper ID
  *     responses:
  *       204:
- *         description: Lesson deleted successfully
+ *         description: Paper deleted successfully
  *       404:
- *         description: Lesson not found
+ *         description: Paper not found
  */
 
-router.delete('/lessons/:id', authenticateUser, authorizeRoles('admin', 'staff'), lessonsController.deleteLesson);
+router.delete('/papers/:id', authenticateUser, authorizeRoles('admin', 'staff'), papersController.deletePapers);
 
 
 module.exports = router;

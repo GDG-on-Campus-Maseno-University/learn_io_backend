@@ -2,6 +2,7 @@ const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const envUtils = require('../common/envUtils');
+const { setAuthCookie } = require('../utils/cookieHelper');
 
 // Cookie configuration
 const cookieOptions = {
@@ -27,6 +28,8 @@ exports.register = async(req, res) => {
         }
 
         // Create and save new user
+
+        res.status(200).json({ user: safeUserData });
         const user = new User({ name, email, role, password });
         await user.save();
 
@@ -34,7 +37,7 @@ exports.register = async(req, res) => {
         const token = jwt.sign({ id: user._id }, envUtils.get('JWT_SECRET'), {
             expiresIn: '1d'
         });
-
+        setAuthCookie(res, token);
         // Set HTTP-only cookie
         res.cookie('token', token, cookieOptions)
             .status(201)
@@ -78,7 +81,7 @@ exports.login = async(req, res) => {
         const token = jwt.sign({ id: user._id, role: user.role },
             envUtils.get('JWT_SECRET'), { expiresIn: '1d' }
         );
-
+        setAuthCookie(res, token);
         // Set HTTP-only cookie
         res.cookie('token', token, cookieOptions)
             .status(200)
